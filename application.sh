@@ -2,7 +2,7 @@
 JARFile=$2
 PIDFile=$3
 LOGFile=$4
-JAVA_OPS=-Xms512m -Xmx1g -XX:PermSize=128m -XX:MaxPermSize=256m
+JAVA_OPS=-Xms512m -Xmx1g -XX:PermSize=256m -XX:MaxPermSize=512m -XX:+UseConcMarkSweepGC
 
 if [ $4 ]
 then
