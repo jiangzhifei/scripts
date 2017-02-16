@@ -1,31 +1,33 @@
 #!/bin/bash
 #------------------------------------------
-#Ã¿ÈÕÁè³¿´ò°üÇ°Ò»ÈÕÈÕÖ¾
+#æ¯æ—¥å‡Œæ™¨æ‰“åŒ…å‰ä¸€æ—¥æ—¥å¿—
 #-----------------------------------------
 
 LOG_PATH=/home/nginx/nginx-1.6.3/logs/
+BCK_LOG_PATH=/usr/upload/
+
+
 LAST_DATE=$(date -d "yesterday" +%Y%m%d)
 
 
-#Ñ­»·nginxÈÕÖ¾Â·¾¶£¬½«.logÎÄ¼þ´ò³Étar.gz
+#å¾ªçŽ¯nginxæ—¥å¿—è·¯å¾„ï¼Œå°†.logæ–‡ä»¶æ‰“æˆtar.gz
 
 for LOGFILE in `ls $LOG_PATH |grep "log$"`
  do
    tarName="$LOG_PATH$LOGFILE-$LAST_DATE.tar.gz"
-    echo $LOGFILE
-   if  tar -zcvf $tarName $LOGFILE >/dev/null
+   bckPath="${BCK_LOG_PATH}$LOGFILE-$LAST_DATE.tar.gz"
+   if  tar -zcvf $tarName $LOGFILE && mv $tarName $bckPath >/dev/null
      then
-       echo "$LOGFILE has been packaged as $tarName"
+       echo "$LOGFILE has been packaged as $tarName,and moved to $bckPath"
        rm -rf $LOGFILE
-       echo "$LOGFILE has been removed!" 
+       echo "$LOGFILE has been removed!"
    fi
-#ÖØÐÂ´ò¿ªÈÕÖ¾
-
+#é‡æ–°æ‰“å¼€æ—¥å¿—
 done
 pidFile="${LOG_PATH}nginx.pid"
 if kill -USR1 `cat $pidFile` >/dev/null
 then
-	echo "$LAST_DATE log has been packaged successfully"
+        echo "$LAST_DATE log has been packaged successfully"
 else
-	echo "$LAST_DATE log has been packaged failed"
+        echo "$LAST_DATE log has been packaged failed"
 fi
