@@ -2,6 +2,7 @@
 JARFile=$2
 PIDFile=$3
 LOGFile=$4
+JAVA_OPS=-Xms512m -Xmx1g -XX:PermSize=128m -XX:MaxPermSize=256m
 
 if [ $4 ]
 then
@@ -86,7 +87,7 @@ case "$1" in
       echo "Process $(print_process) already running"
       exit 1
     fi
-    nohup java -jar $JARFile >> $LOGFile 2>&1 &
+    nohup java $JAVA_OPS -jar $JARFile >> $LOGFile 2>&1 &
     echo "Process $(print_process) started"
   ;;
 
